@@ -3,9 +3,11 @@ package com.example.w1
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,16 +26,43 @@ class ProfileActivity : AppCompatActivity() {
 
         val tvUsername = findViewById<TextView>(R.id.tvUsername)
         val tvSignature = findViewById<TextView>(R.id.tvSignature)
-        val nickname = intent.getStringExtra("username").orEmpty()
+        val sp = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val nickname = sp.getString("nickname", null) ?: sp.getString("username", "") ?: ""
+        val signature = sp.getString("signature", "") ?: ""
         if (nickname.isNotEmpty()) tvUsername.text = nickname
-        val signature = intent.getStringExtra("signature").orEmpty()
         if (signature.isNotEmpty()) tvSignature.text = signature
 
         findViewById<LinearLayout>(R.id.itemNickname).setOnClickListener {
-            Toast.makeText(this, "昵称", Toast.LENGTH_SHORT).show()
+            val et = EditText(this)
+            et.setText(tvUsername.text.toString())
+            AlertDialog.Builder(this)
+                .setTitle("修改昵称")
+                .setView(et)
+                .setPositiveButton("保存") { _, _ ->
+                    val new = et.text.toString().trim()
+                    getSharedPreferences("user_prefs", MODE_PRIVATE).edit()
+                        .putString("nickname", new).apply()
+                    tvUsername.text = new
+                    Toast.makeText(this, "已保存", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("取消", null)
+                .show()
         }
         findViewById<LinearLayout>(R.id.itemSignature).setOnClickListener {
-            Toast.makeText(this, "签名", Toast.LENGTH_SHORT).show()
+            val et = EditText(this)
+            et.setText(tvSignature.text.toString())
+            AlertDialog.Builder(this)
+                .setTitle("修改签名")
+                .setView(et)
+                .setPositiveButton("保存") { _, _ ->
+                    val new = et.text.toString().trim()
+                    getSharedPreferences("user_prefs", MODE_PRIVATE).edit()
+                        .putString("signature", new).apply()
+                    tvSignature.text = new
+                    Toast.makeText(this, "已保存", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("取消", null)
+                .show()
         }
         findViewById<LinearLayout>(R.id.itemChangePassword).setOnClickListener {
             Toast.makeText(this, "修改密码", Toast.LENGTH_SHORT).show()

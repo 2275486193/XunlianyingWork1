@@ -28,14 +28,19 @@ class LoginActivity : AppCompatActivity() {
         val btnWeChat = findViewById<ImageView>(R.id.btnWeChat)
         val btnApple = findViewById<ImageView>(R.id.btnApple)
 
+        val db = UserDbHelper(this)
         btnLogin.setOnClickListener {
             val u = username.text.toString().trim()
             val p = password.text.toString()
-            if (u == "1234" && p == "1234") {
+            if (db.checkUser(u, p)) {
+                val sp = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                val editor = sp.edit()
+                editor.putString("username", u)
+                if (!sp.contains("nickname")) editor.putString("nickname", u)
+                if (!sp.contains("signature")) editor.putString("signature", "这是一句签名")
+                editor.apply()
                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, ProfileActivity::class.java)
-                intent.putExtra("username", u)
-                intent.putExtra("signature", "这是一句签名")
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show()
