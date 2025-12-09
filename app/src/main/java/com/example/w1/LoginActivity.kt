@@ -29,11 +29,17 @@ class LoginActivity : AppCompatActivity() {
         val btnApple = findViewById<ImageView>(R.id.btnApple)
 
         btnLogin.setOnClickListener {
-            Toast.makeText(this, "仅前端演示", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra("username", username.text.toString())
-            intent.putExtra("signature", "这是一句签名")
-            startActivity(intent)
+            val u = username.text.toString().trim()
+            val p = password.text.toString()
+            if (u == "1234" && p == "1234") {
+                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("username", u)
+                intent.putExtra("signature", "这是一句签名")
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnWeChat.setOnClickListener {

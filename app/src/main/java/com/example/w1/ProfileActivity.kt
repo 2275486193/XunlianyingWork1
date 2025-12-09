@@ -1,6 +1,8 @@
 package com.example.w1
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -44,6 +46,14 @@ class ProfileActivity : AppCompatActivity() {
         }
         findViewById<LinearLayout>(R.id.itemAbout).setOnClickListener {
             Toast.makeText(this, "关于我们", Toast.LENGTH_SHORT).show()
+        }
+
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
+        btnLogout.setOnClickListener {
+            Toast.makeText(this, "已退出", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }
