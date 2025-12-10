@@ -21,10 +21,25 @@
 - `app/src/main/res/values/styles.xml`：圆形头像样式。
 - `icon/`：UI 图标素材，已导入到 `res/drawable` 并在页面中使用。
 
-## 运行环境
-- Android Gradle Plugin：`8.13.1`
-- Kotlin：`2.0.21`
-- 需要 JDK 11 及以上进行构建（本地环境为 JDK 8 会导致 Gradle 插件解析失败）。
+## 环境与技术栈
+- 语言与工具：
+  - Kotlin `2.0.21`
+  - Android Gradle Plugin `8.13.1`
+  - Gradle Wrapper（使用仓库内置脚本）
+- Android 配置：
+  - `compileSdk` 36，`minSdk` 24，`targetSdk` 36
+  - 主题与边界使用 AndroidX 与 Material 兼容方案
+- 主要依赖：
+  - AndroidX Core KTX `1.17.0`
+  - AppCompat `1.6.1`
+  - Material Components `1.13.0`（`ShapeableImageView` 等）
+  - Activity `1.12.1`
+  - ConstraintLayout `2.1.4`
+- 本地存储：
+  - `SQLiteOpenHelper` 用于登录账号校验（预置用户）
+  - `SharedPreferences` 用于保存 `username`、`nickname`、`signature`
+- 构建要求：
+  - 需要 JDK 11 及以上进行构建（JDK 8 会导致插件解析失败）
 
 ## 构建与安装
 1. 确保 `JAVA_HOME` 指向 JDK 11+，`java -version` 输出为 11 或更高。
@@ -33,6 +48,16 @@
 gradlew.bat assembleDebug`）
 3. 安装到设备/模拟器：`adb install -r app/build/outputs/apk/debug/app-debug.apk`
 4. 首次启动进入登录页。
+
+## 页面预览
+
+登录页：
+
+![登录页面](登录.png)
+
+个人中心：
+
+![个人页面](个人页.png)
 
 ## 使用说明
 - 默认登录账号：`1234`，密码：`1234`（数据库预置）。
@@ -73,4 +98,3 @@ gradlew.bat assembleDebug`）
 - 将数据库与 SP 访问迁移到后台线程或 Room 架构，以提升可维护性与安全性。
 - 为编辑字段增加输入校验与长度限制。
 - 补充 UI 细节与暗色模式适配，抽取文案到 `strings.xml`。
-
